@@ -11,9 +11,22 @@ fun main() {
     val mage = Mage(mageName)
     val archer = Archer(archerName)
     val boss=Boss(enemyName)
-    val heroGroup: List<Hero> = listOf(warrior,mage,archer)
+
+    val heroGroup: List<Hero> = listOf(warrior, mage, archer)
     val enemyGroup: MutableList<Enemy> = mutableListOf(boss)
-    val bossHelper=BossHelper("${boss.name}'s Helper")
-    intro(warrior, mage, archer,boss)
+
+    var bossHelper = BossHelper("${boss.name}'s Lakei")
+    intro(warrior, mage, archer, boss)
+    for (hero in heroGroup) {
+        println(
+            """....................
+        |${hero.name}
+        |HP ${hero.hP}/${hero.maxHP}
+        |Damage ${hero.damage}
+        |....................
+    """.trimMargin()
+        )
+        hero.chooseAction(boss, bossHelper)
+    }
 }
 

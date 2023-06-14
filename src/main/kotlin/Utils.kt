@@ -18,19 +18,19 @@ fun intro(warrior: Warrior,mage: Mage,archer: Archer,boss: Boss) {
     println("Generate Heroes to Play with...")
     println("Your Heroes are...")
     println("""....................
-        |The Warrior ${warrior.name}
+        |Der Warrior ${warrior.name}
         |HP ${warrior.hP}/${warrior.maxHP}
         |Damage ${warrior.damage}
         |....................
     """.trimMargin())
     println("""....................
-        |The Mage ${mage.name}
+        |Der Mage ${mage.name}
         |HP ${mage.hP}/${mage.maxHP}
         |Damage ${mage.damage}
         |....................
     """.trimMargin())
     println("""....................
-        |The Archer ${archer.name}
+        |Der Archer ${archer.name}
         |HP ${archer.hP}/${archer.maxHP}
         |Damage ${archer.damage}
         |....................
