@@ -1,18 +1,25 @@
 package classes.heroes
-
 import classes.Bag
 import classes.enemys.Boss
 import classes.enemys.BossHelper
 import classes.enemys.Enemy
-
 open class Hero(
     var name: String = "Hero",
     var hP: Int = 100,
     var maxHP: Int = 100,
     var damage: Int = 50,
-    var active: Boolean = hP != 0
+    var active: Boolean = true
+
 ) {
-    fun chooseAction(target1: Boss, target2: BossHelper) {
+    fun chooseAction(target1: Boss, target2: BossHelper,enemyList: MutableList<Enemy>) {
+        println(
+            """....................
+        |${this.name}
+        |HP ${this.hP}/${this.maxHP}
+        |Damage ${this.damage}
+        |....................
+    """.trimMargin()
+        )
         println(
             """Welche Aktion soll ${this.name} ausführen:
             |1. Angriff
@@ -36,9 +43,9 @@ open class Hero(
                 attack(target2)
             }
         } else if (inputUser == 2 && target2.active) {
-            areaAttack(target1, target2)
+            areaAttack(enemyList)
         } else if (inputUser == 2 && !target2.active) {
-            areaAttack(target1,target2)
+            areaAttack(enemyList)
         } else if (inputUser == 1 && !target2.active) {
             attack(target1)
         } else if (inputUser == 3) {
@@ -50,12 +57,13 @@ open class Hero(
 
     open fun attack(target1: Enemy) {
         target1.blocking()
-        if (target1.blocking()) {
-            var damageAttack = this.damage
+        if (target1.block) {
+            val damageAttack = this.damage
             target1.hP -= damageAttack / 2
+            hPToZero(target1)
             println(
                 """${target1.name} hat die Attacke blockiert!!
-                |Die Attacke hat nur den halben schaden zugefügt (${this.damage / 2}).
+                |Die Attacke hat nur halben schaden zugefügt (${this.damage / 2}).
             """.trimMargin()
             )
             target1.block = false
@@ -69,6 +77,8 @@ open class Hero(
             )
         } else {
             target1.hP -= this.damage
+//            Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
+            hPToZero(target1)
             println(
                 """${this.name} greift ${target1.name} mit ${this.damage} an.)
             """.trimMargin()
@@ -84,22 +94,31 @@ open class Hero(
         }
     }
 
-    fun areaAttack(target1: Boss, target2: BossHelper) {
-        if (target2.active) {
-            attack(target1)
-            attack(target2)
-        } else{
-            attack(target1)
+    fun areaAttack(enemyList:MutableList<Enemy>) {
+        for(enemy in enemyList){
+            attack(enemy)
         }
+//        if (target2.active) {
+//            attack(target1)
+//            attack(target2)
+//        } else{
+//            attack(target1)
+//        }
     }
 
     fun blocking(): Boolean {
         println("${this.name} versucht den nächsten Angriff zu blockieren.")
-        return listOf(true, true, false).random()
+        return when((1..100).random()){
+            in 1..70 -> true
+            else -> false
+        }
     }
 
     fun useBag() {
         println("welches Item willst du verwenden")
-
+    }
+    fun hPToZero(target:Enemy){
+        if (target.hP<0)
+            target.hP=0
     }
 }
