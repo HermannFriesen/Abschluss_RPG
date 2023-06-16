@@ -1,13 +1,16 @@
 import classes.enemys.Boss
 import classes.enemys.BossHelper
+import classes.enemys.Enemy
 import classes.heroes.Archer
+import classes.heroes.Hero
 import classes.heroes.Mage
 import classes.heroes.Warrior
 val warriorName= listOf<String>("Alvis","Bjorn","Bud","Einar","Ivar","Jarl","Orvar","Ragnar").random()
 val archerName= listOf<String>("Arjuna","Abhimanyu","Agilaz","Apollo","Arash","Artemis","Ashwathama","Bhishma").random()
-val mageName= listOf<String>("Zathar","Bartley","Oswald","Antero","Shaka","Podar","Delina","Hurin","Mitra","Kenneth","Artemis","Saliar","Galadriel","Lessthe","Magnus").random()
+val mageName= listOf<String>("Zathar","Bartley","Oswald","Antero","Shaka","Podar","Delina","Hurin","Mitra","Kenneth","Saliar","Galadriel","Lessthe","Magnus").random()
 val enemyName= listOf<String>("Thornblight","Skinrender","Dreadnaught","Morticia","Mordath","Wolftamer","Typhus","Corpsebreath","Marroweater","Abolusha","Polyphemus","Wintercall","Bramblejack","Hallowskull","Tempest","ScarRidge").random()
 fun intro(warrior: Warrior,mage: Mage,archer: Archer,boss: Boss) {
+
     println("!Dungeon Master!")
     println("Press Enter to Start the Game")
     readln()
@@ -46,5 +49,18 @@ fun generateEnemy(enemy: Boss){
         |^^^^^^^^^^^^^^^^^^^
     """.trimMargin())
 }
-
+fun zeroHPOutHero(groupOfHero: MutableList<Hero>){
+    for (hero in groupOfHero) {
+        if (hero.hP == 0) {
+            groupOfHero.remove(hero)
+        }
+    }
+}
+fun zeroHPOutEnemy(groupOfEnemy: MutableList<Enemy>){
+    for (enemy in groupOfEnemy) {
+        if (enemy.hP == 0) {
+            groupOfEnemy.remove(enemy)
+        }
+    }
+}
 
