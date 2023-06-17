@@ -35,7 +35,7 @@ open class Hero(
         """.trimMargin()
         )
         val inputUser = readln().toInt()
-        if (inputUser == 1 && target2.active) {
+        if (inputUser == 1 && target2.hP>0 && target2.active) {
             println(
                 """Welchen Gegner wollen Sie Angreifen?
                 |1. ${target1.name}
@@ -66,7 +66,7 @@ open class Hero(
         if (target1.block) {
             val damageAttack = this.damage
             target1.hP -= damageAttack / 2
-            //            Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
+            // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
             hPToZero(target1)
             println(
                 """${target1.name} hat die Attacke blockiert!!
@@ -84,10 +84,10 @@ open class Hero(
             )
         } else {
             target1.hP -= this.damage
-    //            Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
+            // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
             hPToZero(target1)
             println(
-                """${this.name} greift ${target1.name} mit ${this.damage} an.)
+                """${this.name} greift ${target1.name} mit ${this.damage} an.
             """.trimMargin()
             )
             println(
@@ -107,7 +107,7 @@ open class Hero(
         }
     }
 
-    //      Blockiert den nächsten Angriff des Gegners mit einer 70 % chance.
+    // Blockiert den nächsten Angriff des Gegners mit einer 70 % chance.
     fun blocking() {
         println("${this.name} versucht den nächsten Angriff zu blockieren.")
         return when ((1..100).random()) {
@@ -120,7 +120,7 @@ open class Hero(
         println("welches Item willst du verwenden")
     }
 
-    //            Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
+    // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
     fun hPToZero(target: Enemy) {
         if (target.hP < 0)
             target.hP = 0

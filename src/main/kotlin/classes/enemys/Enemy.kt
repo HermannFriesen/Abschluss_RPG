@@ -1,4 +1,5 @@
 package classes.enemys
+
 import classes.heroes.Hero
 
 open class Enemy(
@@ -8,10 +9,11 @@ open class Enemy(
     var damage: Int = 50,
     var block: Boolean = false
 ) {
-    val attackNameList: MutableMap<String,Int> = mutableMapOf<String,Int>() //    todo liste der Individuellen Attacken und deren angriffsschaden
+    val attackNameList: MutableMap<String, Int> =
+        mutableMapOf<String, Int>() //    todo liste der Individuellen Attacken und deren angriffsschaden
 
-//    soll eine zufällige Aktion durchführen
-    open fun randomAction(enemyGroup: MutableList<Enemy>, heroGroup: MutableList<Hero>,bossHelper: BossHelper) {
+    //    soll eine zufällige Aktion durchführen
+    open fun randomAction(enemyGroup: MutableList<Enemy>, heroGroup: MutableList<Hero>, bossHelper: BossHelper) {
         val randomizer = (1..100).random()
         if (this.hP < this.maxHP / 2 || bossHelper.hP < bossHelper.maxHP / 2) {
             when (randomizer) {
@@ -27,6 +29,7 @@ open class Enemy(
             }
         }
     }
+
     //    Soll einen zufälligen Helden angreifen
     fun attack(target: MutableList<Hero>) {
         val randomTarget = target.random()
@@ -47,16 +50,17 @@ open class Enemy(
 
     fun strongAttack(target: MutableList<Hero>) { //   todo Soll zufällig Buffs verursachen
     }
+
     fun areaAttack(target: MutableList<Hero>) {
 
-            println("${this.name} greift alle Spieler mit Feuerlawine an (${this.damage}).")
+        println("${this.name} greift alle Spieler mit Feuerlawine an (${this.damage}).")
         for (hero in target) {
             if (hero.block) {
                 println("${hero.name} blockiert den Angriff von ${this.name}.")
-            hero.hP -= this.damage/2
+                hero.hP -= this.damage / 2
                 hPToZero(hero)
-            println("${this.name} fügt ${hero.name} nur noch (${this.damage/2}) schaden zu.")
-                hero.block=false
+                println("${this.name} fügt ${hero.name} nur noch (${this.damage / 2}) schaden zu.")
+                hero.block = false
                 println(
                     """....................
         |${hero.name}
@@ -65,11 +69,11 @@ open class Enemy(
         |....................
     """.trimMargin()
                 )
-            }else{
-                hero.hP-= this.damage
+            } else {
+                hero.hP -= this.damage
                 hPToZero(hero)
                 println("${this.name} fügt ${hero.name} (${this.damage}) schaden zu.")
-                hero.block=false
+                hero.block = false
                 println(
                     """....................
         |${hero.name}
@@ -81,8 +85,9 @@ open class Enemy(
             }
         }
     }
+
     //    Soll alle Mitglieder die im Spiel sind, um 20 % ihrer gesamt HP heilen
-    fun healing(enemyList: MutableList<Enemy>) { //todo heilung individualisieren
+    fun healing(enemyList: MutableList<Enemy>) { //todo heilung individualisieren (diese gehört zum Boss)
         if (enemyList.size == 2) {
             println("${this.name} heilt sich und sein Lakai.")
             for (enemy in enemyList) {
@@ -90,7 +95,7 @@ open class Enemy(
                 if (enemy.name == this.name) {
                     println("${this.name} heilt sich um ${maxHP / 100 * 20} HP.")
                 } else {
-                    println("${this.name}heilt sein Lakai um ${maxHP / 100 * 20} HP.")
+                    println("${this.name} heilt sein Lakai um ${maxHP / 100 * 20} HP.")
                 }
             }
         } else {
@@ -98,6 +103,7 @@ open class Enemy(
             println("${this.name} hat sich um 50 HP geheilt.")
         }
     }
+
     //      Blockiert einen Angriff mit einer 40 % Chance
     fun blocking() {
         var randomizer = (1..100).random()

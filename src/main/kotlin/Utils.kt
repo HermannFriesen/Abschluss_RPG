@@ -5,62 +5,118 @@ import classes.heroes.Archer
 import classes.heroes.Hero
 import classes.heroes.Mage
 import classes.heroes.Warrior
-val warriorName= listOf<String>("Alvis","Bjorn","Bud","Einar","Ivar","Jarl","Orvar","Ragnar").random()
-val archerName= listOf<String>("Arjuna","Abhimanyu","Agilaz","Apollo","Arash","Artemis","Ashwathama","Bhishma").random()
-val mageName= listOf<String>("Zathar","Bartley","Oswald","Antero","Shaka","Podar","Delina","Hurin","Mitra","Kenneth","Saliar","Galadriel","Lessthe","Magnus").random()
-val enemyName= listOf<String>("Thornblight","Skinrender","Dreadnaught","Morticia","Mordath","Wolftamer","Typhus","Corpsebreath","Marroweater","Abolusha","Polyphemus","Wintercall","Bramblejack","Hallowskull","Tempest","ScarRidge").random()
-fun intro(warrior: Warrior,mage: Mage,archer: Archer,boss: Boss) {
+
+val warriorName = listOf<String>("Alvis", "Bjorn", "Bud", "Einar", "Ivar", "Jarl", "Orvar", "Ragnar").random()
+val archerName =
+    listOf<String>("Arjuna", "Abhimanyu", "Agilaz", "Apollo", "Arash", "Artemis", "Ashwathama", "Bhishma").random()
+val mageName = listOf<String>(
+    "Zathar",
+    "Bartley",
+    "Oswald",
+    "Antero",
+    "Shaka",
+    "Podar",
+    "Delina",
+    "Hurin",
+    "Mitra",
+    "Kenneth",
+    "Saliar",
+    "Galadriel",
+    "Lessthe",
+    "Magnus"
+).random()
+val enemyName = listOf<String>(
+    "Thornblight",
+    "Skinrender",
+    "Dreadnaught",
+    "Morticia",
+    "Mordath",
+    "Wolftamer",
+    "Typhus",
+    "Corpsebreath",
+    "Marroweater",
+    "Abolusha",
+    "Polyphemus",
+    "Wintercall",
+    "Bramblejack",
+    "Hallowskull",
+    "Tempest",
+    "ScarRidge"
+).random()
+
+fun intro(warrior: Warrior, mage: Mage, archer: Archer, boss: Boss) {
 
     println("!Dungeon Master!")
     println("Press Enter to Start the Game")
     readln()
-    generateHeroes(warrior,mage,archer)
+    generateHeroes(warrior, mage, archer)
     generateEnemy(boss)
 }
-    fun generateHeroes(warrior: Warrior,mage: Mage,archer: Archer){
+
+fun generateHeroes(warrior: Warrior, mage: Mage, archer: Archer) {
     println("Generate Heroes to Play with...")
     println("Your Heroes are...")
-    println("""....................
+    println(
+        """....................
         |Der Warrior ${warrior.name}
         |HP ${warrior.hP}/${warrior.maxHP}
         |Damage ${warrior.damage}
         |....................
-    """.trimMargin())
-    println("""....................
+    """.trimMargin()
+    )
+    println(
+        """....................
         |Der Mage ${mage.name}
         |HP ${mage.hP}/${mage.maxHP}
         |Damage ${mage.damage}
         |....................
-    """.trimMargin())
-    println("""....................
+    """.trimMargin()
+    )
+    println(
+        """....................
         |Der Archer ${archer.name}
         |HP ${archer.hP}/${archer.maxHP}
         |Damage ${archer.damage}
         |....................
-    """.trimMargin())
+    """.trimMargin()
+    )
 }
 
-fun generateEnemy(enemy: Boss){
+fun generateEnemy(enemy: Boss) {
     println("You will fight against...")
-    println("""^^^^^^^^^^^^^^^^^^^
+    println(
+        """^^^^^^^^^^^^^^^^^^^
         |${enemy.name}
         |HP ${enemy.hP}/${enemy.maxHP}
         |Damage ${enemy.damage}
         |^^^^^^^^^^^^^^^^^^^
-    """.trimMargin())
+    """.trimMargin()
+    )
 }
-fun zeroHPOutHero(groupOfHero: MutableList<Hero>){
-    for (hero in groupOfHero) {
-        if (hero.hP == 0) {
-            groupOfHero.remove(hero)
-        }
-    }
+
+fun zeroHPOutHero(groupOfHero: MutableList<Hero>) {
+    groupOfHero.removeAll { hero: Hero -> hero.hP == 0 }
+//    val heroesToRemove = groupOfHero
+//    for (hero in heroesToRemove) {
+//        if (hero.hP == 0) {
+//            groupOfHero.remove(hero)
+//        }
+//    }
 }
-fun zeroHPOutEnemy(groupOfEnemy: MutableList<Enemy>){
-    for (enemy in groupOfEnemy) {
-        if (enemy.hP == 0) {
-            groupOfEnemy.remove(enemy)
-        }
-    }
+
+fun zeroHPOutEnemy(groupOfEnemy: MutableList<Enemy>) {
+    groupOfEnemy.removeAll { enemy: Enemy -> enemy.hP == 0 }
 }
+//fun gameOver(allHeroHp: Int,allEnemyHp: Int){
+//    //        Hier wird überprüft, ob aus einem Team die gesamten Lebenspunkte verloren hat.
+//    //        Ist das der fall, wird das Spiel beendet.
+//    if (allHeroHp == 0) {
+//        println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
+//        break
+//    } else if (allEnemyHp == 0) {
+//        println("SIEG\nDein Team hat ${boss.name} besiegt!")
+//        break
+//    }
+//}
+
 
