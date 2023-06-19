@@ -2,7 +2,8 @@ package classes
 
 import classes.heroes.Hero
 
-open class Item(name: String) {
+open class Item(var name: String) {
+
 
     open fun healing(groupOfHeroes: MutableList<Hero>) {
         println("Wer soll um 50 HP geheilt werden?")

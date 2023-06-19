@@ -12,19 +12,15 @@ open class Bag(var used: Boolean = false) {
     )
 
     fun showBag() {
-        var numList = 1
         println("0. Zurück")
-        for (item in items) {
-            println("$numList. ${item.toString()}")
-            numList++
+        for (i in items) {
+            println("${items.indexOf(i)+1}. ${i.name}")
         }
     }
-//    override fun toString(): String {
-//        return "${items.name}"
-    }
+
     fun useItem(inputUser: Int, groupOfHeroes: MutableList<Hero>) {
         val chosenItem = items[inputUser - 1]
-        if (chosenItem == Potion("Heiltrank")) {
+        if (chosenItem.name == "Heiltrank") {
             chosenItem.healing(groupOfHeroes)
         } else{
             chosenItem.buff(groupOfHeroes)

@@ -134,7 +134,7 @@ open class Hero(
     ) {
         println("welches Item willst du verwenden")
         bag.showBag()
-        val inputUser = readln().toInt() //todo Eingabe
+        val inputUser = readln().toInt() //todo Eingabe while Schleife input !in listof(...)
         if (inputUser == 0)
             chooseAction(target1, target2, enemyList, heroList, bag)
         else {
