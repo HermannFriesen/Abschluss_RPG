@@ -19,8 +19,8 @@ open class Bag(var used: Boolean = false) {
             numList++
         }
     }
-    override fun toString(): String {
-        return "${items.name}"
+//    override fun toString(): String {
+//        return "${items.name}"
     }
     fun useItem(inputUser: Int, groupOfHeroes: MutableList<Hero>) {
         val chosenItem = items[inputUser - 1]
