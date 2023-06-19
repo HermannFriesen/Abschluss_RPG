@@ -10,13 +10,15 @@ open class Hero(
     var hP: Int = 100,
     var maxHP: Int = 100,
     var damage: Int = 50,
-    var block: Boolean = false
+    var block: Boolean = false,
+    var buff: Boolean = false,
+    var buffCounter: Int = 3
 ) {
     //    todo liste der Individuellen Attacken und deren angriffsschaden
     val attackNameList: MutableMap<String, Int> = mutableMapOf<String, Int>()
 
     //    todo parameter löschen bzw überarbeiten
-    fun chooseAction(target1: Boss, target2: BossHelper, enemyList: MutableList<Enemy>) {
+    fun chooseAction(target1: Boss, target2: BossHelper, enemyList: MutableList<Enemy>,heroList: MutableList<Hero>, bag: Bag) {
         println(
             """....................
         |${this.name}
@@ -35,11 +37,17 @@ open class Hero(
         """.trimMargin()
         )
         val inputUser = readln().toInt()
-        if (inputUser == 1 && target2.hP>0 && target2.active) {
+        if (inputUser == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
             println(
                 """Welchen Gegner wollen Sie Angreifen?
+                    |^^^^^^^^^^^^^^^^^^^
                 |1. ${target1.name}
-                |2. ${target2.name}
+                |   HP ${target1.hP}/${target1.maxHP}
+                |   ^^^^^^^^^^^^^^^^^^^
+                |   ^^^^^^^^^^^^^^^^^^^
+                |2. /| ${target2.name} |\
+                |   HP ${target2.hP}/${target2.maxHP}
+                |   ^^^^^^^^^^^^^^^^^^^
             """.trimMargin()
             )
             val targetInput = readln().toInt()
@@ -48,16 +56,14 @@ open class Hero(
             } else {
                 attack(target2)
             }
-        } else if (inputUser == 2 && target2.active) {
+        } else if (inputUser == 2) {
             areaAttack(enemyList)
-        } else if (inputUser == 2 && !target2.active) {
-            areaAttack(enemyList)
-        } else if (inputUser == 1 && !target2.active) {
+        } else if (inputUser == 1 && !target2.active || inputUser == 1 && target2.wasActive) {
             attack(target1)
         } else if (inputUser == 3) {
             blocking()
         } else if (inputUser == 4) {
-            useBag()
+            useBag(target1, target2, enemyList,heroList, bag)
         }
     }
 
@@ -101,23 +107,39 @@ open class Hero(
         }
     }
 
+    //    Flächenschaden greift alle Gegner an und verursacht 75 % des Grundschadenwertes.
     fun areaAttack(enemyList: MutableList<Enemy>) {
         for (enemy in enemyList) {
+            this.damage / 100 * 75
             attack(enemy)
+            this.damage / 75 * 100
         }
     }
 
     // Blockiert den nächsten Angriff des Gegners mit einer 70 % chance.
     fun blocking() {
         println("${this.name} versucht den nächsten Angriff zu blockieren.")
-        return when ((1..100).random()) {
-            in 1..70 -> this.block = true
+        return when ((1..70).random()) {
+            in 1..100 -> this.block = true
             else -> this.block = false
         }
     }
 
-    fun useBag() {
+    fun useBag(
+        target1: Boss,
+        target2: BossHelper,
+        enemyList: MutableList<Enemy>,
+        heroList: MutableList<Hero>,
+        bag: Bag
+    ) {
         println("welches Item willst du verwenden")
+        bag.showBag()
+        val inputUser = readln().toInt() //todo Eingabe
+        if (inputUser == 0)
+            chooseAction(target1, target2, enemyList, heroList, bag)
+        else {
+            bag.useItem(inputUser, heroList)
+        }
     }
 
     // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)

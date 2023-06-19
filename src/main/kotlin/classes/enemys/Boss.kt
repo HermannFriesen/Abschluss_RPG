@@ -42,14 +42,13 @@ class Boss(name: String, hP: Int = 500, maxHP: Int = 500, damage: Int = 50) : En
                 when (randomizer) {
                     in 1..20 -> attack(heroGroup) // 20
                     in 21..40 -> areaAttack(heroGroup) // 20
-                    in 41..70 -> healing(enemyGroup) // 10
+                    in 41..70 -> healing(enemyGroup) // 30
                     in 71..100 -> summon(bossHelper,enemyGroup) // 30
                 }
             } else if (this.hP > this.maxHP / 2 && !bossHelper.wasActive) {
                 when (randomizer) {
                     in 1..30 -> attack(heroGroup) // 30
-                    in 31..60 -> areaAttack(heroGroup) // 30
-                    in 60..70 -> healing(enemyGroup) // 10
+                    in 31..70 -> areaAttack(heroGroup) // 40
                     in 71..100 -> summon(bossHelper,enemyGroup) // 30
                 }
             }

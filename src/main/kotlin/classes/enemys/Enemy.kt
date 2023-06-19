@@ -33,18 +33,40 @@ open class Enemy(
     //    Soll einen zufälligen Helden angreifen
     fun attack(target: MutableList<Hero>) {
         val randomTarget = target.random()
-        randomTarget.hP -= this.damage
-        hPToZero(randomTarget)
-        println("${this.name} greift ${randomTarget.name} mit Schwerthieb an (${this.damage}).")
+        if (randomTarget.block) {
+            randomTarget.hP -= this.damage / 2
+            hPToZero(randomTarget)
+            println(
+                """${this.name} greift ${randomTarget.name} mit Schwerthieb an (${this.damage}).
+                    |${randomTarget.name} hat die Attacke blockiert!!
+                |Die Attacke hat nur halben schaden zugefügt (${this.damage / 2}).
+            """.trimMargin()
+            )
+            randomTarget.block = false
 //        todo statusanzeige evtl in funktion auslagern
-        println(
-            """....................
+            println(
+                """....................
         |${randomTarget.name}
         |HP ${randomTarget.hP}/${randomTarget.maxHP}
         |Damage ${randomTarget.damage}
         |....................
     """.trimMargin()
-        )
+            )
+        } else {
+
+            randomTarget.hP -= this.damage
+            hPToZero(randomTarget)
+            println("${this.name} greift ${randomTarget.name} mit Schwerthieb an (${this.damage}).")
+//        todo statusanzeige evtl in funktion auslagern
+            println(
+                """....................
+        |${randomTarget.name}
+        |HP ${randomTarget.hP}/${randomTarget.maxHP}
+        |Damage ${randomTarget.damage}
+        |....................
+    """.trimMargin()
+            )
+        }
     }
 
 

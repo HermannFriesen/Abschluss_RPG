@@ -107,16 +107,8 @@ fun zeroHPOutHero(groupOfHero: MutableList<Hero>) {
 fun zeroHPOutEnemy(groupOfEnemy: MutableList<Enemy>) {
     groupOfEnemy.removeAll { enemy: Enemy -> enemy.hP == 0 }
 }
-//fun gameOver(allHeroHp: Int,allEnemyHp: Int){
-//    //        Hier wird überprüft, ob aus einem Team die gesamten Lebenspunkte verloren hat.
-//    //        Ist das der fall, wird das Spiel beendet.
-//    if (allHeroHp == 0) {
-//        println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
-//        break
-//    } else if (allEnemyHp == 0) {
-//        println("SIEG\nDein Team hat ${boss.name} besiegt!")
-//        break
-//    }
-//}
 
+fun buffreset(groupOfHero: MutableList<Hero>,groupOfEnemy: MutableList<Enemy>){
+
+}
 

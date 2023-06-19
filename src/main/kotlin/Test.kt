@@ -1,3 +1,4 @@
+import classes.Bag
 import classes.enemys.Boss
 import classes.enemys.BossHelper
 import classes.enemys.Enemy
@@ -17,6 +18,7 @@ fun main() {
     var allHeroHP = heroGroup.sumOf { hero -> hero.hP }
     val enemyGroup: MutableList<Enemy> = mutableListOf(boss)
     var allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP }
+    var bag = Bag()
 
     //    Hier wird das Spiel gestartet
     intro(warrior, mage, archer, boss)
@@ -36,7 +38,7 @@ fun main() {
                 break
             }
             //        Hier wird ausgewählt, welche Aktion der jeweilige Held ausführen soll.
-            hero.chooseAction(boss, bossHelper, enemyGroup)
+            hero.chooseAction(boss, bossHelper, enemyGroup, heroGroup, bag)
             if (bossHelper.hP == 0) {  //todo Prüft ob der Helfer bereits besiegt wurde
                 bossHelper.wasActive = true //todo setzt die variable auf true damit er nur einmalig beschwört werden kann
             }
@@ -47,13 +49,13 @@ fun main() {
             allHeroHP = heroGroup.sumOf { hero -> hero.hP } //todo evtl nicht notwendig
             allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP } //todo evtl nicht notwendig
             //            Hier wird die Aktion des Gegners ausgeführt sowie evlt. des Helfers
-        if (allHeroHP == 0) {
-            println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
-            break
-        } else if (allEnemyHP == 0) {
-            println("SIEG\nDein Team hat ${boss.name} besiegt!")
-            break
-        }
+            if (allHeroHP == 0) {
+                println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
+                break
+            } else if (allEnemyHP == 0) {
+                println("SIEG\nDein Team hat ${boss.name} besiegt!")
+                break
+            }
             enemy.randomAction(enemyGroup, heroGroup, bossHelper)
         }
         if (bossHelper.active && !bossHelper.wasActive) {
