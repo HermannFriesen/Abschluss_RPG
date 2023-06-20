@@ -23,17 +23,29 @@ fun main() {
     //    Hier wird das Spiel gestartet
     intro(warrior, mage, archer, boss)
     //    Hier wird überprüft, ob die Teams insgesamt noch HP besitzen.
+        var round = 1
     while (allHeroHP > 0 && allEnemyHP > 0) {
+       bagUsed(bag)
         //            Hier wird die Aktion jedes Helden ausgeführt, die noch in der Liste Helden sind(über HP verfügen)
+            var buffCounter=0
         for (hero in heroGroup) {
-            allHeroHP = heroGroup.sumOf { hero -> hero.hP }
+            if (!hero.buff)
+                hero.buff=false
+           else if (hero.buff && buffCounter==3){
+                hero.buff= false
+                hero.damage -= (hero.damage * 0.2).toInt()
+                buffCounter=0
+            }
+buffCounter++
+//            allHeroHP = heroGroup.sumOf { hero -> hero.hP }
             allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP }
             //        Hier wird überprüft, ob aus einem Team die gesamten Lebenspunkte verloren hat.
             //        Ist das der fall, wird das Spiel beendet.
-            if (allHeroHP == 0) {
-                println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
-                break
-            } else if (allEnemyHP == 0) {
+//            if (allHeroHP == 0) {
+//                println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
+//                break
+//            } else
+                if (allEnemyHP == 0) {
                 println("SIEG\nDein Team hat ${boss.name} besiegt!")
                 break
             }
@@ -47,15 +59,16 @@ fun main() {
         }
         for (enemy in enemyGroup) {
             allHeroHP = heroGroup.sumOf { hero -> hero.hP } //todo evtl nicht notwendig
-            allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP } //todo evtl nicht notwendig
+//            allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP } //todo evtl nicht notwendig
             //            Hier wird die Aktion des Gegners ausgeführt sowie evlt. des Helfers
             if (allHeroHP == 0) {
                 println("GAME OVER\n${boss.name} hat alle Helden besiegt!")
                 break
-            } else if (allEnemyHP == 0) {
-                println("SIEG\nDein Team hat ${boss.name} besiegt!")
-                break
             }
+//            else if (allEnemyHP == 0) {
+//                println("SIEG\nDein Team hat ${boss.name} besiegt!")
+//                break
+//            }
             enemy.randomAction(enemyGroup, heroGroup, bossHelper)
         }
         if (bossHelper.active && !bossHelper.wasActive) {
@@ -63,6 +76,7 @@ fun main() {
         }
         //            Hier werden die Helden entfernt, die keine Lebenspunkte mehr besitzen
         zeroHPOutHero(heroGroup)
+        round ++
     }
 }
 

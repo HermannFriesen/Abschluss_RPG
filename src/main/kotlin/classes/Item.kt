@@ -1,45 +1,41 @@
 package classes
 
 import classes.heroes.Hero
+import kotlin.math.roundToInt
 
 open class Item(var name: String) {
 
-
-    open fun healing(groupOfHeroes: MutableList<Hero>) {
-        println("Wer soll um 50 HP geheilt werden?")
+    fun chooseHeroForItem(groupOfHeroes: MutableList<Hero>, bag: Bag) {
+        println("Welcher Held soll \"${this.name}\" bekommen?")
+        println("0. zurück")
         var listNum = 1
         for (hero in groupOfHeroes) {
             println("$listNum. ${hero.name} HP ${hero.hP}/${hero.maxHP}")
             listNum++
-        }
-        val inputUser = readln().toInt() //todo eingabe
-        val target = groupOfHeroes[inputUser - 1]
-        if (target.hP < target.maxHP) {
-            val healHP = 50
-            target.hP += healHP
-            if (target.hP > target.maxHP) {
-                target.hP = target.maxHP
-            }
-            println("${target.name} wird um $healHP geheilt und hat jetzt ${target.hP}/${target.maxHP}.")
-        } else {
-            println("${target.name} hat die Maximale HP erreicht.")
-            healing(groupOfHeroes)
         }
     }
 
-    open fun buff(groupOfHeroes: MutableList<Hero>) {
-        println("Wer soll den angriffs Boost (10 %) für 3 Runden erhalten?")
-        var listNum = 1
-        for (hero in groupOfHeroes) {
-            println("$listNum. ${hero.name} HP ${hero.hP}/${hero.maxHP}")
-            listNum++
-        }
-        val inputUser = readln().toInt() //todo eingabe
-        val hero = groupOfHeroes[inputUser - 1]
-        val buff = hero.damage / 100 * 20
-        hero.damage += buff
-        hero.buff = true
-        println("${hero.name} Schadenswert wird um $buff Schadenspunkte erhöht. Damage: ${hero.damage}.")
 
+    fun healing(inputUser: Int,groupOfHeroes: MutableList<Hero>, bag: Bag) {
+            val hero = groupOfHeroes[inputUser - 1]
+        if (hero.hP < hero.maxHP) {
+            val healHP = 50
+            hero.hP += healHP
+            if (hero.hP > hero.maxHP) {
+                hero.hP = hero.maxHP
+            }
+            println("${hero.name} wird um $healHP geheilt und hat jetzt ${hero.hP}/${hero.maxHP}.")
+        } else {
+            println("${hero.name} hat die maximal HP erreicht.")
+            chooseHeroForItem(groupOfHeroes, bag)
+        }
+    }
+
+    fun buff(inputUser: Int, groupOfHeroes: MutableList<Hero>) {
+        val hero = groupOfHeroes[inputUser - 1]
+        val buff = (hero.damage.toDouble() * 0.2).toInt()
+        hero.damage += buff
+        println("${hero.name} Schadenswerte wird um $buff Schadenspunkte erhöht. Damage: ${hero.damage}.")
+        hero.buff = true
     }
 }

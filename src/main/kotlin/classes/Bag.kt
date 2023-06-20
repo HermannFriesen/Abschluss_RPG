@@ -11,20 +11,13 @@ open class Bag(var used: Boolean = false) {
         Buff("Vitamine")
     )
 
-    fun showBag() {
+    open fun showBag() {
         println("0. Zurück")
         for (i in items) {
             println("${items.indexOf(i)+1}. ${i.name}")
         }
     }
+    fun useItem2(){
 
-    fun useItem(inputUser: Int, groupOfHeroes: MutableList<Hero>) {
-        val chosenItem = items[inputUser - 1]
-        if (chosenItem.name == "Heiltrank") {
-            chosenItem.healing(groupOfHeroes)
-        } else{
-            chosenItem.buff(groupOfHeroes)
-            items.remove(chosenItem)
-        }
     }
 }

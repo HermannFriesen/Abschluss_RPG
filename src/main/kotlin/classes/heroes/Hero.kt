@@ -18,52 +18,106 @@ open class Hero(
     val attackNameList: MutableMap<String, Int> = mutableMapOf<String, Int>()
 
     //    todo parameter löschen bzw überarbeiten
-    fun chooseAction(target1: Boss, target2: BossHelper, enemyList: MutableList<Enemy>,heroList: MutableList<Hero>, bag: Bag) {
-        println(
-            """....................
+    fun chooseAction(
+        target1: Boss,
+        target2: BossHelper,
+        enemyList: MutableList<Enemy>,
+        heroList: MutableList<Hero>,
+        bag: Bag
+    ) {
+        if (bag.used) {
+            println(
+                """....................
         |${this.name}
         |HP ${this.hP}/${this.maxHP}
         |Damage ${this.damage}
         |....................
     """.trimMargin()
-        )
+            )
 //        todo auswahl funktion
-        println(
-            """Welche Aktion soll ${this.name} ausführen:
+            println(
+                """Welche Aktion soll ${this.name} ausführen:
+            |1. Angriff
+            |2. Flächenangriff
+            |3. Nächsten Angriff blocken
+        """.trimMargin()
+            )
+            val inputUser = readln().toInt()
+            if (inputUser == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
+                println(
+                    """Welchen Gegner wollen Sie Angreifen?
+                    |^^^^^^^^^^^^^^^^^^^
+                |1. ${target1.name}
+                |   HP ${target1.hP}/${target1.maxHP}
+                |   ^^^^^^^^^^^^^^^^^^^
+                |   
+                |   /////////|\\\\\\\\\
+                |2. /| ${target2.name} |\
+                |   HP ${target2.hP}/${target2.maxHP}
+                |   \\\\\\\\\|/////////
+            """.trimMargin()
+                )
+                val targetInput = readln().toInt()
+                if (targetInput == 1) {
+                    attack(target1)
+                } else {
+                    attack(target2)
+                }
+            } else if (inputUser == 2) {
+                areaAttack(enemyList)
+            } else if (inputUser == 1 && !target2.active || inputUser == 1 && target2.wasActive) {
+                attack(target1)
+            } else if (inputUser == 3) {
+                blocking()
+            }
+        }else {
+            println(
+                """....................
+        |${this.name}
+        |HP ${this.hP}/${this.maxHP}
+        |Damage ${this.damage}
+        |....................
+    """.trimMargin()
+            )
+//        todo auswahl funktion
+            println(
+                """Welche Aktion soll ${this.name} ausführen:
             |1. Angriff
             |2. Flächenangriff
             |3. Nächsten Angriff blocken
             |4. Beutel benutzen
         """.trimMargin()
-        )
-        val inputUser = readln().toInt()
-        if (inputUser == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
-            println(
-                """Welchen Gegner wollen Sie Angreifen?
+            )
+            val inputUser = readln().toInt()
+            if (inputUser == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
+                println(
+                    """Welchen Gegner wollen Sie Angreifen?
                     |^^^^^^^^^^^^^^^^^^^
                 |1. ${target1.name}
                 |   HP ${target1.hP}/${target1.maxHP}
                 |   ^^^^^^^^^^^^^^^^^^^
+                |   
                 |   ^^^^^^^^^^^^^^^^^^^
                 |2. /| ${target2.name} |\
                 |   HP ${target2.hP}/${target2.maxHP}
                 |   ^^^^^^^^^^^^^^^^^^^
             """.trimMargin()
-            )
-            val targetInput = readln().toInt()
-            if (targetInput == 1) {
+                )
+                val targetInput = readln().toInt()
+                if (targetInput == 1) {
+                    attack(target1)
+                } else {
+                    attack(target2)
+                }
+            } else if (inputUser == 2) {
+                areaAttack(enemyList)
+            } else if (inputUser == 1 && !target2.active || inputUser == 1 && target2.wasActive) {
                 attack(target1)
-            } else {
-                attack(target2)
+            } else if (inputUser == 3) {
+                blocking()
+            } else if (inputUser == 4) {
+                useBag(target1, target2, enemyList, heroList, bag)
             }
-        } else if (inputUser == 2) {
-            areaAttack(enemyList)
-        } else if (inputUser == 1 && !target2.active || inputUser == 1 && target2.wasActive) {
-            attack(target1)
-        } else if (inputUser == 3) {
-            blocking()
-        } else if (inputUser == 4) {
-            useBag(target1, target2, enemyList,heroList, bag)
         }
     }
 
@@ -138,13 +192,37 @@ open class Hero(
         if (inputUser == 0)
             chooseAction(target1, target2, enemyList, heroList, bag)
         else {
-            bag.useItem(inputUser, heroList)
+            useItem(target1, target2, enemyList, heroList, bag, inputUser)
         }
     }
 
-    // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
-    fun hPToZero(target: Enemy) {
-        if (target.hP < 0)
-            target.hP = 0
+    fun useItem(
+        target1: Boss,
+        target2: BossHelper,
+        enemyList: MutableList<Enemy>,
+        heroList: MutableList<Hero>,
+        bag: Bag,
+        inputUser: Int
+    ) {
+        val chosenItem = bag.items[inputUser - 1]
+        chosenItem.chooseHeroForItem(heroList, bag)
+        val inputUser2 = readln().toInt() //todo eingabe
+        if (inputUser2 == 0) {
+            this.useBag(target1, target2, enemyList, heroList, bag)
+        } else if (chosenItem.name == "Heiltrank") {
+            chosenItem.healing(inputUser2, heroList, bag)
+            bag.items.remove(chosenItem)
+            bag.used = true
+        } else {
+            chosenItem.buff(inputUser2, heroList)
+            bag.items.remove(chosenItem)
+            bag.used = true
+        }
     }
+}
+
+// Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
+fun hPToZero(target: Enemy) {
+    if (target.hP < 0)
+        target.hP = 0
 }

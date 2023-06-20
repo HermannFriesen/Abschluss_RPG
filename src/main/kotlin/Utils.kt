@@ -1,3 +1,4 @@
+import classes.Bag
 import classes.enemys.Boss
 import classes.enemys.BossHelper
 import classes.enemys.Enemy
@@ -107,8 +108,18 @@ fun zeroHPOutHero(groupOfHero: MutableList<Hero>) {
 fun zeroHPOutEnemy(groupOfEnemy: MutableList<Enemy>) {
     groupOfEnemy.removeAll { enemy: Enemy -> enemy.hP == 0 }
 }
-
-fun buffreset(groupOfHero: MutableList<Hero>,groupOfEnemy: MutableList<Enemy>){
-
+fun bagUsed(bag: Bag){
+    if (bag.used)
+        bag.used=false
 }
+//fun buffreset(rounds: Int,groupOfHero: MutableList<Hero>,groupOfEnemy: MutableList<Enemy>){
+//
+//    val roundNumStart = 0
+//
+//    if (roundNumStart){
+//
+//    }
+
+
+//}
 
