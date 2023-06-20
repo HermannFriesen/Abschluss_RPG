@@ -10,8 +10,13 @@ open class Item(var name: String) {
         println("0. zurück")
         var listNum = 1
         for (hero in groupOfHeroes) {
-            println("$listNum. ${hero.name} HP ${hero.hP}/${hero.maxHP}")
+            if (this.name=="Heiltrank"){
+            println("$listNum. ${hero.name} HP ${hero.hP}/${hero.maxHP}. (+50 HP)")
             listNum++
+            } else {
+                println("$listNum. ${hero.name} SP ${hero.damage}. (+20 % SP)")
+                listNum++
+            }
         }
     }
 
