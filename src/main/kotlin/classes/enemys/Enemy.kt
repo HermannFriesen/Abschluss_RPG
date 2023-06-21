@@ -9,18 +9,21 @@ open class Enemy(
     var damage: Int = 50,
     var block: Boolean = false
 ) {
+
     val attackNameList: MutableMap<String, Int> =
         mutableMapOf<String, Int>() //    todo liste der Individuellen Attacken und deren angriffsschaden
 
     //    soll eine zufällige Aktion durchführen
     open fun randomAction(enemyGroup: MutableList<Enemy>, heroGroup: MutableList<Hero>, bossHelper: BossHelper) {
         val randomizer = (1..100).random()
+        // Unter die Hälfte der HP
         if (this.hP < this.maxHP / 2 || bossHelper.hP < bossHelper.maxHP / 2) {
             when (randomizer) {
                 in 1..20 -> attack(heroGroup)
                 in 21..40 -> areaAttack(heroGroup)
                 in 41..100 -> healing(enemyGroup)
             }
+        // Über die Hälfte der HP
         } else {
             when (randomizer) {
                 in 1..40 -> attack(heroGroup)
@@ -43,7 +46,7 @@ open class Enemy(
             """.trimMargin()
             )
             randomTarget.block = false
-//        todo statusanzeige evtl in funktion auslagern
+//todo statusanzeige evtl in funktion auslagern
             println(
                 """....................
         |${randomTarget.name}
@@ -67,10 +70,6 @@ open class Enemy(
     """.trimMargin()
             )
         }
-    }
-
-
-    fun strongAttack(target: MutableList<Hero>) { //   todo Soll zufällig Buffs verursachen
     }
 
     fun areaAttack(target: MutableList<Hero>) {
@@ -109,20 +108,20 @@ open class Enemy(
     }
 
     //    Soll alle Mitglieder die im Spiel sind, um 20 % ihrer gesamt HP heilen
-    fun healing(enemyList: MutableList<Enemy>) { //todo heilung individualisieren (diese gehört zum Boss)
+    open fun healing(enemyList: MutableList<Enemy>) {
         if (enemyList.size == 2) {
-            println("${this.name} heilt sich und sein Lakai.")
+            println("${this.name} heilt sich und sein Meister.")
             for (enemy in enemyList) {
                 enemy.hP += maxHP / 100 * 20
                 if (enemy.name == this.name) {
                     println("${this.name} heilt sich um ${maxHP / 100 * 20} HP.")
                 } else {
-                    println("${this.name} heilt sein Lakai um ${maxHP / 100 * 20} HP.")
+                    println("${this.name} heilt sein Meister um ${maxHP / 100 * 20} HP.")
                 }
             }
         } else {
             this.hP += maxHP / 100 * 20
-            println("${this.name} hat sich um 50 HP geheilt.")
+            println("${this.name} heilt sich um ${maxHP / 100 *20} HP.")
         }
     }
 

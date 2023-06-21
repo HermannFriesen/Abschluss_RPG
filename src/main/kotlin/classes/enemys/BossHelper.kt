@@ -9,6 +9,43 @@ class BossHelper(
     var wasActive: Boolean = false
 ) : Enemy(name, hP, maxHP, damage) {
 
+    fun image() {
+        println(
+                """
+Art by Joan G. Stark
+              v
+        (__)v | v
+        /\/\\_|_/
+       _\__/  |
+      /  \/`\<`)
+      \ (  |\_/
+      /)))-(  |
+     / /^ ^ \ |
+    /  )^/\^( |
+jgs )_//`__>> |
+      #   #`  |
+        """.trimIndent()
+        )
+    }
+    fun image2() {
+        println(
+                """
+      .-.
+     (o.o)
+      |=|
+   //.=|=.\\
+  \\ .=|=. //
+   \\(_=_)//
+    (:| |:)
+     || ||
+     () ()
+     || ||
+    ==' '==
+        """.trimIndent()
+        )
+    }
+    
+
 }
 
 

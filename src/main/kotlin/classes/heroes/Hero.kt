@@ -70,7 +70,7 @@ open class Hero(
             } else if (inputUser == 3) {
                 blocking()
             }
-        }else {
+        } else {
             println(
                 """....................
         |${this.name}
@@ -225,4 +225,22 @@ open class Hero(
 fun hPToZero(target: Enemy) {
     if (target.hP < 0)
         target.hP = 0
+}
+
+fun tryCatch(input: Int) {
+    do {
+        var errorFound: Boolean
+        try {
+            input
+            errorFound = false
+        } catch (ex: Exception) {
+            errorFound = true
+
+            // Fehlerbehandlung nach Typ des Fehlers
+            if (ex is NumberFormatException)
+                println("Falsche Zahl eingegeben.")
+            else if (ex is NullPointerException)
+                println("Keine Eingabe! Bitte Zahl eingeben.")
+        }
+    } while (errorFound)
 }
