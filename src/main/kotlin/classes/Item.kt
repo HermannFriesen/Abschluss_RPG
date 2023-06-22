@@ -3,7 +3,7 @@ import classes.heroes.Hero
 open class Item(var name: String) {
 
     fun chooseHeroForItem(groupOfHeroes: MutableList<Hero>) {
-        println("Welcher Held soll \"${this.name}\" bekommen?")
+        println("Welcher Held soll \"${this.name}\" bekommen?\n")
         println("0. zurück")
         var listNum = 1
         for (hero in groupOfHeroes) {
@@ -26,9 +26,9 @@ open class Item(var name: String) {
             if (hero.hP > hero.maxHP) {
                 hero.hP = hero.maxHP
             }
-            println("${hero.name} wird um $healHP geheilt und hat jetzt ${hero.hP}/${hero.maxHP}.")
+            println("${hero.name} wird um $healHP geheilt und hat jetzt ${hero.hP}/${hero.maxHP}.\n")
         } else {
-            println("${hero.name} hat die maximal HP erreicht.")
+            println("${hero.name} hat die maximal HP erreicht.\n")
         }
     }
 
@@ -36,7 +36,7 @@ open class Item(var name: String) {
         val hero = groupOfHeroes[inputUserHero - 1]
         val buff = (hero.damage.toDouble() * 0.2).toInt()
         hero.damage += buff
-        println("${hero.name} Schadenswerte wird um $buff Schadenspunkte erhöht. Damage: ${hero.damage}.")
+        println("${hero.name}'s Schadenswert wird um $buff Schadenspunkte erhöht. Damage: ${hero.damage}.\n")
         hero.buff = true
     }
 }

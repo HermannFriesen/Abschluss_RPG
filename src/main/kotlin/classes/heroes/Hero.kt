@@ -1,5 +1,6 @@
 package classes.heroes
 
+import SLEEP_TIME
 import classes.Bag
 import classes.enemys.Boss
 import classes.enemys.BossHelper
@@ -31,9 +32,11 @@ open class Hero(
             this.infoBox()
             println(
                 """Welche Aktion soll ${this.name} ausführen:
+                    |
             |1. ${this.attackNameList[0]} (${this.damage} SP)
             |2. ${this.attackNameList[1]} (75 % = ${(this.damage-this.damage.toDouble() * 0.25).toInt()} AOE)
             |3. Nächsten Angriff blocken (-50 % SP)
+            |
         """.trimMargin()
             )
             do {
@@ -43,6 +46,7 @@ open class Hero(
                     if (inputUserAction == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
                         println(
                             """Welchen Gegner soll ${this.name} Angreifen?
+                                |
                     |^^^^^^^^^^^^^^^^^^^
                 |1. ${target1.name}
                 |   HP ${target1.hP}/${target1.maxHP}
@@ -52,6 +56,7 @@ open class Hero(
                 |2. /| ${target2.name} |\
                 |   HP ${target2.hP}/${target2.maxHP}
                 |   \\\\\\\\\|/////////
+                |   
             """.trimMargin()
                         )
                         do {
@@ -92,10 +97,12 @@ open class Hero(
             this.infoBox()
             println(
                 """Welche Aktion soll ${this.name} ausführen:
+                    |
             |1. ${this.attackNameList[0]} (${this.damage} SP)
             |2. ${this.attackNameList[1]} (75 % = ${(this.damage-this.damage.toDouble() * 0.25).toInt()} AOE)
             |3. Nächsten Angriff blocken (-50 % SP)
             |4. Beutel benutzen
+            |
         """.trimMargin()
             )
             do {
@@ -105,6 +112,7 @@ open class Hero(
                     if (inputUserAction2 == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
                         println(
                             """Welchen Gegner soll ${this.name} Angreifen?
+                                |
                         |^^^^^^^^^^^^^^^^^^^
                 |1. ${target1.name}
                 |   HP ${target1.hP}/${target1.maxHP}
@@ -114,6 +122,7 @@ open class Hero(
                 |2. /| ${target2.name} |\
                 |   HP ${target2.hP}/${target2.maxHP}
                 |   \\\\\\\\\|/////////
+                |   
             """.trimMargin()
                         )
                         do {
@@ -165,6 +174,7 @@ open class Hero(
             println(
                 """${target1.name} hat $attackName blockiert!!
                 |Die Attacke hat nur halben schaden zugefügt (${this.damage / 2}).
+                |
             """.trimMargin()
             )
             target1.block = false
@@ -175,6 +185,7 @@ open class Hero(
             hPToZero(target1)
             println(
                 """${this.name} greift ${target1.name} mit $attackName (${this.damage}) an.
+                    |
             """.trimMargin()
             )
             target1.infoBox()
@@ -192,7 +203,7 @@ open class Hero(
 
     // Blockiert den nächsten Angriff des Gegners mit einer 70 % chance.
     fun blocking() {
-        println("${this.name} versucht den nächsten Angriff zu blockieren.")
+        println("${this.name} versucht den nächsten Angriff zu blockieren.\n")
         return when ((1..70).random()) {
             in 1..100 -> this.block = true
             else -> this.block = false
@@ -206,7 +217,7 @@ open class Hero(
         heroList: MutableList<Hero>,
         bag: Bag
     ) {
-        println("welches Item willst du verwenden")
+        println("welches Item willst du verwenden\n")
         bag.showBag()
         var inputUser: Int? = null
         do {

@@ -3,6 +3,7 @@ package classes.enemys
 import classes.heroes.Hero
 import RED
 import RESETCOLOR
+import SLEEP_TIME
 
 class Boss(
     name: String,
@@ -28,8 +29,10 @@ class Boss(
         z6 = z6.padEnd(25, ' ')
         var z7 = ""
         z7 = z7.padEnd(25, ' ')
-        var z8 = "^^^^^^^^^^^^^^^^^^^"
-        z8 = z8.padEnd(25, ' ')
+        var z8 = ""
+        z8 =z8.padEnd(25,' ')
+        var z9 = "^^^^^^^^^^^^^^^^^^^"
+        z9 = z9.padEnd(25, ' ')
         println("$z1$RED.-._                                             _,-,$RESETCOLOR")
         println("$z2$RED `._`-._                                     _,-'_,'$RESETCOLOR")
         println("$z3$RED    `._  `-._        __.-----.__        _,-'  _,'$RESETCOLOR")
@@ -38,11 +41,13 @@ class Boss(
         println("$z6$RED           )*'     **.__     __.**     '*($RESETCOLOR")
         println("$z7$RED           #  .==..__  \"\"   \"\"  __..==,  #$RESETCOLOR")
         println("$z8$RED           #   `\"._(_).       .(_)_.\"'   #$RESETCOLOR")
+        println(z9)
     }
 
     fun summonHelper(bossHelper: BossHelper) {
-        println("${this.name} beschwört seinen Lakaien.")
+        println("${this.name} beschwört seinen Lakaien.\n")
         bossHelper.active = true
+        Thread.sleep(SLEEP_TIME)
         bossHelper.infoBox()
     }
 
@@ -52,14 +57,14 @@ class Boss(
             for (enemy in enemyList) {
                 enemy.hP += maxHP / 100 * 20
                 if (enemy.name == this.name) {
-                    println("${this.name} heilt sich um ${maxHP / 100 * 20} HP.")
+                    println("${this.name} heilt sich um ${maxHP / 100 * 20} HP.\n")
                 } else {
-                    println("${this.name} heilt sein Lakai um ${maxHP / 100 * 20} HP.")
+                    println("${this.name} heilt sein Lakai um ${maxHP / 100 * 20} HP.\n")
                 }
             }
         } else {
             this.hP += maxHP / 100 * 20
-            println("${this.name} hat sich um 50 HP geheilt.")
+            println("${this.name} hat sich um 50 HP geheilt.\n")
         }
     }
 
@@ -75,9 +80,10 @@ class Boss(
             //  Wenn der Boss oder der Helfer nur noch die hälfte der Max HP besitzen, wird die boss Gruppe zu 60 % geheilt
             if (this.hP < this.maxHP / 2 || bossHelper.hP < bossHelper.maxHP / 2) {
                 when (randomizer) {
-                    in 1..20 -> attack(heroGroup) // 20
-                    in 21..40 -> areaAttack(heroGroup) // 20
-                    in 41..100 -> healing(enemyGroup) // 60
+                    in 1..10 -> poisonHero() //10
+                    in 11..30 -> attack(heroGroup) // 20
+                    in 31..50 -> areaAttack(heroGroup) // 20
+                    in 51..100 -> healing(enemyGroup) // 50
                 }
                 //Sonst wenn Boss oder Helfer alleine kämpfen und über die hälfte der Max HP besitzen, kann der Gegner geheilt werden
             } else if (this.hP > this.maxHP / 2 || bossHelper.hP > bossHelper.maxHP / 2) {

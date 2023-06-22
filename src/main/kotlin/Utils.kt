@@ -4,13 +4,12 @@ import classes.enemys.BossHelper
 import classes.enemys.Enemy
 import classes.heroes.*
 import kotlin.system.exitProcess
+const val SLEEP_TIME: Long = 1500
 // Farbpalette + Format !!!Credits an Johann Kucharczyk-Gentsch!!!
 val RED = "\u001B[31m"
 val YELLOW = "\u001B[33m"
 val GREEN = "\u001B[32m"
 val BLUE = "\u001B[34m"
-val BLACK = "\u001B[30m"
-val WHITE = "\u001B[47m"
 val RESETCOLOR = "\u001B[0m"
 
 val WARRIORNAME = listOf<String>("Alvis", "Bjorn", "Bud", "Einar", "Ivar", "Jarl", "Orvar", "Ragnar").random()
@@ -79,19 +78,29 @@ fun intro(warrior: Warrior, mage: Mage, archer: Archer, boss: Boss) {
     println("Press Enter to Start the Game")
     readln()
     generateHeroes(warrior, mage, archer)
+    Thread.sleep(SLEEP_TIME)
     generateEnemy(boss)
+    Thread.sleep(SLEEP_TIME)
+    println("!!! Lets finish this ${RED}UGLY$RESETCOLOR Monster !!!")
+    Thread.sleep(SLEEP_TIME)
+    println("\n\n\nSTART FIGHT!\n\n\n")
 }
 
 fun generateHeroes(warrior: Warrior, mage: Mage, archer: Archer) {
     println("Generate Heroes to Play with...")
     println("Your Heroes are...")
+    Thread.sleep(SLEEP_TIME)
     warrior.infoBox()
+    Thread.sleep(SLEEP_TIME)
     archer.infoBox()
+    Thread.sleep(SLEEP_TIME)
     mage.infoBox()
+    Thread.sleep(SLEEP_TIME)
 }
 
 fun generateEnemy(enemy: Boss) {
     println("You will fight against...")
+    Thread.sleep(SLEEP_TIME)
     enemy.infoBox()
 }
 
@@ -120,12 +129,15 @@ fun poisonCounter(groupOfHero: MutableList<Hero>, boss: Boss) {
         boss.poison = false
     } else if (boss.poison && boss.poisonCounter == 0) {
         boss.poison = false
-        println("Die Giftwolke von ${boss.name} ist verflogen!")
+        boss.poisonCounter = 3
+        println("Die Giftwolke von ${boss.name} ist verflogen!\n")
+
     } else {
         for (hero in groupOfHero) {
             hero.hP -= 15
-            println("${hero.name}ist vergiftet und verliert 15 HP.")
+            println("${hero.name}ist vergiftet und verliert 15 HP.\n")
             boss.hPToZero(hero)
+            Thread.sleep(1000)
         }
         boss.poisonCounter--
     }
@@ -142,7 +154,7 @@ fun buffCounter(hero: Hero) {
     } else if (hero.buff && hero.buffCounter == 0) {
         hero.buff = false
         hero.damage = (hero.damage.toDouble() / 1.2).toInt()
-        println("${hero.name}'s Vitamine hat die Wirkung verloren. ${hero.name} fügt nun wieder ${hero.damage} Schaden zu.")
+        println("${hero.name}'s Vitamine hat die Wirkung verloren. ${hero.name} fügt nun wieder ${hero.damage} Schaden zu.\n")
     } else {
         hero.buffCounter--
     }
@@ -190,38 +202,51 @@ fun startGame() {
     val bossHelper = BossHelper("${boss.name}'s Lakai")
 
     val heroGroup: MutableList<Hero> = mutableListOf(warrior, mage, archer)
+    var allHeroHP = heroGroup.sumOf { hero -> hero.hP }
     val enemyGroup: MutableList<Enemy> = mutableListOf(boss)
-    var bag = Bag()
+    var allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP }
+    val bag = Bag()
 
     //                Hier wird das Spiel gestartet
     intro(warrior, mage, archer, boss)
     //                Hier wird überprüft, ob die Teams insgesamt noch HP besitzen.
     var round = 1
-    while (heroGroup.isNotEmpty() && enemyGroup.isNotEmpty()) {
+    while (allHeroHP > 0 && allEnemyHP > 0) {
+        Thread.sleep(SLEEP_TIME * 2)
+        println("\nROUND $round!\n")
+        Thread.sleep(SLEEP_TIME)
         bagUsed(bag)
         //            Hier wird die Aktion jedes Helden ausgeführt, die noch in der Liste Helden sind(über HP verfügen)
         for (hero in heroGroup) {
+            Thread.sleep(SLEEP_TIME)
+            allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP }
             //        Hier wird der evtl.
             buffCounter(hero)
-            //        Wenn alle helden besiegt
-            if (enemyGroup.isEmpty()) {
+            //        Wenn alle gegner besiegt wurden, wird die Schleife beendet
+            if (allEnemyHP==0) {
+                Thread.sleep(SLEEP_TIME)
                 victory()
                 break
             }
             //        Hier wird ausgewählt, welche Aktion der jeweilige Held ausführen soll.
             hero.chooseAction(boss, bossHelper, enemyGroup, heroGroup, bag)
+            Thread.sleep(SLEEP_TIME)
             //        Prüft ob der Helfer besiegt wurde
             isBossHelperDefeated(bossHelper)
             //        Hier werden die Gegner entfernt, die keine Lebenspunkte mehr besitzen
             zeroHPOutEnemy(enemyGroup)
         }
         for (enemy in enemyGroup) {
-            if (heroGroup.isEmpty()) {
+            allHeroHP = heroGroup.sumOf { hero -> hero.hP }
+            //            Hier wird die Aktion des Gegners ausgeführt sowie evlt. des Helfers
+            if (allHeroHP==0) {
+                Thread.sleep(SLEEP_TIME)
                 gameOver()
                 break
             }
             //        Hier wird eine zufällige Aktion des Gegners (und des Helfers) ausgeführt
             enemy.randomAction(enemyGroup, heroGroup, bossHelper)
+            Thread.sleep(SLEEP_TIME)
         }
         activateBossHelper(bossHelper, enemyGroup)
         poisonCounter(heroGroup, boss)
@@ -229,11 +254,13 @@ fun startGame() {
         zeroHPOutHero(heroGroup)
         round++
     }
+    restartGame()
 }
 
 fun restartGame() {
     println(
         """Wollen Sie das Spiel neu Starten?
+            |
         |1. Neustart
         |2. Beenden
     """.trimMargin()

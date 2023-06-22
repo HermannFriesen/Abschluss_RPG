@@ -18,7 +18,7 @@ fun main() {
     var allHeroHP = heroGroup.sumOf { hero -> hero.hP }
     val enemyGroup: MutableList<Enemy> = mutableListOf(boss)
     var allEnemyHP = enemyGroup.sumOf { enemy -> enemy.hP }
-    var bag = Bag()
+    val bag = Bag()
 
     //                Hier wird das Spiel gestartet
     intro(warrior, mage, archer, boss)

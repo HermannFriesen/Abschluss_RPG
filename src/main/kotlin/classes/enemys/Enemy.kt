@@ -12,10 +12,6 @@ open class Enemy(
     open fun infoBox() {
 
     }
-
-    val attackNameList: MutableMap<String, Int> =
-        mutableMapOf<String, Int>() //    todo liste der Individuellen Attacken und deren angriffsschaden
-
     //    soll eine zufällige Aktion durchführen
     open fun randomAction(enemyGroup: MutableList<Enemy>, heroGroup: MutableList<Hero>, bossHelper: BossHelper) {
         val randomizer = (1..100).random()
