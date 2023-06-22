@@ -1,4 +1,4 @@
-package classes.heroes
+package classes
 
 import classes.Item
 

@@ -1,8 +1,5 @@
 package classes
 
-import classes.heroes.Buff
-import classes.heroes.Hero
-
 open class Bag(var used: Boolean = false) {
     var items = mutableListOf<Item>(
         Potion("Heiltrank"),
