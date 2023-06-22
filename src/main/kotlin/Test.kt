@@ -8,10 +8,10 @@ import classes.heroes.Mage
 import classes.heroes.Warrior
 
 fun main() {
-    val warrior = Warrior(warriorName)
-    val mage = Mage(mageName)
-    val archer = Archer(archerName)
-    val boss = Boss(enemyName)
+    val warrior = Warrior(WARRIORNAME)
+    val mage = Mage(MAGENAME)
+    val archer = Archer(ARCHERNAME)
+    val boss = Boss(ENEMYNAME)
     val bossHelper = BossHelper("${boss.name}'s Lakai")
 
     val heroGroup: MutableList<Hero> = mutableListOf(warrior, mage, archer)

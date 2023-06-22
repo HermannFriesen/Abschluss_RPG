@@ -1,6 +1,8 @@
 package classes.enemys
 
 import classes.heroes.Hero
+import RED
+import RESETCOLOR
 
 class Boss(
     name: String,
@@ -11,49 +13,42 @@ class Boss(
     var poisonCounter: Int = 3
 ) : Enemy(name, hP, maxHP, damage) {
 
-    fun infoBox() {
-        var z1 = ""
-        z1 = z1.padEnd(20, ' ')
+    override fun infoBox() {
+        var z1 = "^^^^^^^^^^^^^^^^^^^"
+        z1 = z1.padEnd(25, ' ')
         var z2 = ""
-        z2 = z2.padEnd(20, ' ')
-        var z3 = "^^^^^^^^^^^^^^^^^^^"
-        z3 = z3.padEnd(20, ' ')
+        z2 = z2.padEnd(25, ' ')
+        var z3 = ""
+        z3 = z3.padEnd(25, ' ')
         var z4 = this.name
-        z4 = z4.padEnd(20, ' ')
+        z4 = z4.padEnd(25, ' ')
         var z5 = "HP ${this.hP}/${this.maxHP}"
-        z5 = z5.padEnd(20, ' ')
+        z5 = z5.padEnd(25, ' ')
         var z6 = "Damage ${this.damage}"
-        z6 = z6.padEnd(20, ' ')
-        var z7 = "^^^^^^^^^^^^^^^^^^^"
-        z7 = z7.padEnd(20, ' ')
-        var z8 = ""
-        z8 = z8.padEnd(20, ' ')
-        println("$z1.-._                                             _,-,")
-        println("$z2 `._`-._                                     _,-'_,'")
-        println("$z3    `._  `-._        __.-----.__        _,-'  _,'")
-        println("$z4       `._   `#==='\"'           '\"'===#'   _,'")
-        println("$z5          `._/)  ._               _.  (\\_,'")
-        println("$z6           )*'     **.__     __.**     '*(")
-        println("$z7           #  .==..__  \"\"   \"\"  __..==,  #")
-        println("$z8           #   `\"._(_).       .(_)_.\"'   #")
+        z6 = z6.padEnd(25, ' ')
+        var z7 = ""
+        z7 = z7.padEnd(25, ' ')
+        var z8 = "^^^^^^^^^^^^^^^^^^^"
+        z8 = z8.padEnd(25, ' ')
+        println("$z1$RED.-._                                             _,-,$RESETCOLOR")
+        println("$z2$RED `._`-._                                     _,-'_,'$RESETCOLOR")
+        println("$z3$RED    `._  `-._        __.-----.__        _,-'  _,'$RESETCOLOR")
+        println("$z4$RED       `._   `#==='\"'           '\"'===#'   _,'$RESETCOLOR")
+        println("$z5$RED          `._/)  ._               _.  (\\_,'$RESETCOLOR")
+        println("$z6$RED           )*'     **.__     __.**     '*($RESETCOLOR")
+        println("$z7$RED           #  .==..__  \"\"   \"\"  __..==,  #$RESETCOLOR")
+        println("$z8$RED           #   `\"._(_).       .(_)_.\"'   #$RESETCOLOR")
     }
 
     fun summonHelper(bossHelper: BossHelper) {
         println("${this.name} beschwört seinen Lakaien.")
         bossHelper.active = true
-        println(
-            """^^^^^^^^^^^^^^^^^^^
-        |/| ${bossHelper.name} |\
-        |HP ${bossHelper.hP}/${bossHelper.maxHP}
-        |Damage ${bossHelper.damage}
-        |^^^^^^^^^^^^^^^^^^^
-    """.trimMargin()
-        )
+        bossHelper.infoBox()
     }
 
     override fun healing(enemyList: MutableList<Enemy>) {
         if (enemyList.size == 2) {
-            println("${this.name} heilt sich und sein Lakai.")
+            println("${this.name} heilt sich und sein Lakai.\n")
             for (enemy in enemyList) {
                 enemy.hP += maxHP / 100 * 20
                 if (enemy.name == this.name) {
@@ -115,40 +110,5 @@ class Boss(
                 }
             }
         }
-    }
-
-    fun image() {
-        println(
-            """
-    .-._                                             _,-,
-     `._`-._                                     _,-'_,'
-        `._  `-._        __.-----.__        _,-'  _,'
-           `._   `#==='"'           '"'===#'   _,'
-              `._/)  ._               _.  (\_,'
-               )*'     **.__     __.**     '*( 
-               #  .==..__  ""   ""  __..==,  # 
-Deelkar        #   `"._(_).       .(_)_."'   #
-        """.trimIndent()
-        )
-    }
-
-    fun image2() {
-        println(
-            """
-                        ______
-             ______,---'__,---'
-         _,-'---_---__,---'
-  /_    (,  ---____',
- /  ',,   `, ,-'
-;/)   ,',,_/,'
-| /\   ,.'//\
-`-` \ ,,'    `.
-     `',   ,-- `.
-     '/ / |      `,         
-     //'',.\_    .\\      ,{==>-
-  __//   __;_`-  \ `;.__,;'
-((,--,) (((,------;  `--' jv
-        """.trimIndent()
-        )
     }
 }

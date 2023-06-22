@@ -14,10 +14,12 @@ open class Hero(
     var buff: Boolean = false,
     var buffCounter: Int = 3
 ) {
-    //    todo liste der Individuellen Attacken und deren angriffsschaden
-    val attackNameList: MutableMap<String, Int> = mutableMapOf<String, Int>()
+    open fun infoBox() {
 
-    //    todo parameter löschen bzw überarbeiten
+    }
+
+    open var attackNameList: List<String> = listOf()
+
     fun chooseAction(
         target1: Boss,
         target2: BossHelper,
@@ -26,26 +28,21 @@ open class Hero(
         bag: Bag
     ) {
         if (bag.used) {
-            println(
-                """....................
-        |${this.name}
-        |HP ${this.hP}/${this.maxHP}
-        |Damage ${this.damage}
-        |....................
-    """.trimMargin()
-            )
-//        todo auswahl funktion
+            this.infoBox()
             println(
                 """Welche Aktion soll ${this.name} ausführen:
-            |1. Angriff
-            |2. Flächenangriff
-            |3. Nächsten Angriff blocken
+            |1. ${this.attackNameList[0]} (${this.damage} SP)
+            |2. ${this.attackNameList[1]} (75 % = ${(this.damage-this.damage.toDouble() * 0.25).toInt()} AOE)
+            |3. Nächsten Angriff blocken (-50 % SP)
         """.trimMargin()
             )
-            val inputUser = readln().toInt()
-            if (inputUser == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
-                println(
-                    """Welchen Gegner wollen Sie Angreifen?
+            do {
+                var inputUserAction: Int? = null
+                try {
+                    inputUserAction = readln().toInt()
+                    if (inputUserAction == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
+                        println(
+                            """Welchen Gegner soll ${this.name} Angreifen?
                     |^^^^^^^^^^^^^^^^^^^
                 |1. ${target1.name}
                 |   HP ${target1.hP}/${target1.maxHP}
@@ -56,72 +53,109 @@ open class Hero(
                 |   HP ${target2.hP}/${target2.maxHP}
                 |   \\\\\\\\\|/////////
             """.trimMargin()
-                )
-                val targetInput = readln().toInt()
-                if (targetInput == 1) {
-                    attack(target1)
-                } else {
-                    attack(target2)
+                        )
+                        do {
+                            var targetInput: Int? = null
+                            try {
+                                targetInput = readln().toInt()
+                                when (targetInput) {
+                                    1 -> {
+                                        attack(target1)
+                                    }
+
+                                    2 -> {
+                                        attack(target2)
+                                    }
+
+                                    else -> {
+                                        println("Ungültige Zahl eingegeben. Bitte 1 oder 2 eingeben.")
+                                    }
+                                }
+                            } catch (ex: Exception) {
+                                println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
+                            }
+                        } while (targetInput !in 1..2)
+                    } else if (inputUserAction == 2) {
+                        areaAttack(enemyList)
+                    } else if (inputUserAction == 1 && !target2.active || inputUserAction == 1 && target2.wasActive) {
+                        attack(target1)
+                    } else if (inputUserAction == 3) {
+                        blocking()
+                    } else {
+                        println("Ungültige Zahl eingegeben. Bitte 1 bis 3 eingeben.")
+                    }
+                } catch (ex: Exception) {
+                    println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
                 }
-            } else if (inputUser == 2) {
-                areaAttack(enemyList)
-            } else if (inputUser == 1 && !target2.active || inputUser == 1 && target2.wasActive) {
-                attack(target1)
-            } else if (inputUser == 3) {
-                blocking()
-            }
+            } while (inputUserAction !in 1..3)
         } else {
-            println(
-                """....................
-        |${this.name}
-        |HP ${this.hP}/${this.maxHP}
-        |Damage ${this.damage}
-        |....................
-    """.trimMargin()
-            )
-//        todo auswahl funktion
+            this.infoBox()
             println(
                 """Welche Aktion soll ${this.name} ausführen:
-            |1. Angriff
-            |2. Flächenangriff
-            |3. Nächsten Angriff blocken
+            |1. ${this.attackNameList[0]} (${this.damage} SP)
+            |2. ${this.attackNameList[1]} (75 % = ${(this.damage-this.damage.toDouble() * 0.25).toInt()} AOE)
+            |3. Nächsten Angriff blocken (-50 % SP)
             |4. Beutel benutzen
         """.trimMargin()
             )
-            val inputUser = readln().toInt()
-            if (inputUser == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
-                println(
-                    """Welchen Gegner wollen Sie Angreifen?
-                    |^^^^^^^^^^^^^^^^^^^
+            do {
+                var inputUserAction2: Int? = null
+                try {
+                    inputUserAction2 = readln().toInt()
+                    if (inputUserAction2 == 1 && target2.hP > 0 && target2.active && !target2.wasActive) {
+                        println(
+                            """Welchen Gegner soll ${this.name} Angreifen?
+                        |^^^^^^^^^^^^^^^^^^^
                 |1. ${target1.name}
                 |   HP ${target1.hP}/${target1.maxHP}
                 |   ^^^^^^^^^^^^^^^^^^^
                 |   
-                |   ^^^^^^^^^^^^^^^^^^^
+                |   /////////|\\\\\\\\\
                 |2. /| ${target2.name} |\
                 |   HP ${target2.hP}/${target2.maxHP}
-                |   ^^^^^^^^^^^^^^^^^^^
+                |   \\\\\\\\\|/////////
             """.trimMargin()
-                )
-                val targetInput = readln().toInt()
-                if (targetInput == 1) {
-                    attack(target1)
-                } else {
-                    attack(target2)
+                        )
+                        do {
+                            var targetInput: Int? = null
+                            try {
+                                targetInput = readln().toInt()
+                                when (targetInput) {
+                                    1 -> {
+                                        attack(target1)
+                                    }
+
+                                    2 -> {
+                                        attack(target2)
+                                    }
+
+                                    else -> {
+                                        println("Ungültige Zahl eingegeben. Bitte 1 oder 2 eingeben.")
+                                    }
+                                }
+                            } catch (ex: Exception) {
+                                println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
+                            }
+                        } while (targetInput !in 1..2)
+                    } else if (inputUserAction2 == 2) {
+                        areaAttack(enemyList)
+                    } else if (inputUserAction2 == 1 && !target2.active || inputUserAction2 == 1 && target2.wasActive) {
+                        attack(target1)
+                    } else if (inputUserAction2 == 3) {
+                        blocking()
+                    } else if (inputUserAction2 == 4) {
+                        useBag(target1, target2, enemyList, heroList, bag)
+                    } else {
+                        println("Ungültige Zahl eingegeben. Bitte 1 bis 4 eingeben.")
+                    }
+                } catch (ex: Exception) {
+                    println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
                 }
-            } else if (inputUser == 2) {
-                areaAttack(enemyList)
-            } else if (inputUser == 1 && !target2.active || inputUser == 1 && target2.wasActive) {
-                attack(target1)
-            } else if (inputUser == 3) {
-                blocking()
-            } else if (inputUser == 4) {
-                useBag(target1, target2, enemyList, heroList, bag)
-            }
+            } while (inputUserAction2 !in 1..4)
         }
     }
 
-    open fun attack(target1: Enemy) {
+    open fun attack(target1: Enemy,attackName: String = attackNameList[0]) {
         target1.blocking()
         if (target1.block) {
             val damageAttack = this.damage
@@ -129,44 +163,30 @@ open class Hero(
             // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
             hPToZero(target1)
             println(
-                """${target1.name} hat die Attacke blockiert!!
+                """${target1.name} hat $attackName blockiert!!
                 |Die Attacke hat nur halben schaden zugefügt (${this.damage / 2}).
             """.trimMargin()
             )
             target1.block = false
-            println(
-                """^^^^^^^^^^^^^^^^^^^
-        |${target1.name}
-        |HP ${target1.hP}/${target1.maxHP}
-        |Damage ${target1.damage}
-        |^^^^^^^^^^^^^^^^^^^
-    """.trimMargin()
-            )
+            target1.infoBox()
         } else {
             target1.hP -= this.damage
             // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
             hPToZero(target1)
             println(
-                """${this.name} greift ${target1.name} mit ${this.damage} an.
+                """${this.name} greift ${target1.name} mit $attackName (${this.damage}) an.
             """.trimMargin()
             )
-            println(
-                """^^^^^^^^^^^^^^^^^^^
-        |${target1.name}
-        |HP ${target1.hP}/${target1.maxHP}
-        |Damage ${target1.damage}
-        |^^^^^^^^^^^^^^^^^^^
-    """.trimMargin()
-            )
+            target1.infoBox()
         }
     }
 
     //    Flächenschaden greift alle Gegner an und verursacht 75 % des Grundschadenwertes.
     fun areaAttack(enemyList: MutableList<Enemy>) {
         for (enemy in enemyList) {
-            this.damage / 100 * 75
-            attack(enemy)
-            this.damage / 75 * 100
+            this.damage -= (this.damage.toDouble() * 0.25).toInt()
+            attack(enemy,attackNameList[1])
+            this.damage = (this.damage.toDouble() / 0.75).toInt()
         }
     }
 
@@ -188,13 +208,28 @@ open class Hero(
     ) {
         println("welches Item willst du verwenden")
         bag.showBag()
-        val inputUser = readln().toInt() //todo Eingabe while Schleife input !in listof(...)
-        if (inputUser == 0)
-            chooseAction(target1, target2, enemyList, heroList, bag)
-        else {
-            useItem(target1, target2, enemyList, heroList, bag, inputUser)
-        }
+        var inputUser: Int? = null
+        do {
+            try {
+                inputUser = readln().toInt()
+
+                when (inputUser) {
+                    0 -> chooseAction(target1, target2, enemyList, heroList, bag)
+                    in 1..bag.items.size -> {
+                        useItem(target1, target2, enemyList, heroList, bag, inputUser)
+                        break
+                    }
+
+                    else -> {
+                        println("Ungültige Zahl eingegeben. Bitte 0 bis ${bag.items.size} eingeben.")
+                    }
+                }
+            } catch (ex: Exception) {
+                println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
+            }
+        } while (inputUser !in 0..bag.items.size)
     }
+
 
     fun useItem(
         target1: Boss,
@@ -202,45 +237,41 @@ open class Hero(
         enemyList: MutableList<Enemy>,
         heroList: MutableList<Hero>,
         bag: Bag,
-        inputUser: Int
+        inputUserItem: Int
     ) {
-        val chosenItem = bag.items[inputUser - 1]
-        chosenItem.chooseHeroForItem(heroList, bag)
-        val inputUser2 = readln().toInt() //todo eingabe
-        if (inputUser2 == 0) {
-            this.useBag(target1, target2, enemyList, heroList, bag)
-        } else if (chosenItem.name == "Heiltrank") {
-            chosenItem.healing(inputUser2, heroList, bag)
-            bag.items.remove(chosenItem)
-            bag.used = true
-        } else {
-            chosenItem.buff(inputUser2, heroList)
-            bag.items.remove(chosenItem)
-            bag.used = true
-        }
+        val chosenItem = bag.items[inputUserItem - 1]
+        chosenItem.chooseHeroForItem(heroList)
+        do {
+            var inputUserHero: Int? = null
+            try {
+                inputUserHero = readln().toInt()
+                if (inputUserHero == 0) {
+                    this.useBag(target1, target2, enemyList, heroList, bag)
+                } else if (chosenItem.name == "Heiltrank" && inputUserHero in 1..heroList.size && heroList[inputUserHero-1].hP < heroList[inputUserHero-1].maxHP) {
+                    chosenItem.healing(inputUserHero, heroList)
+                    bag.items.remove(chosenItem)
+                    bag.used = true
+                    break
+                } else if (chosenItem.name == "Vitamine" && inputUserHero in 1..heroList.size) {
+                    chosenItem.buff(inputUserHero, heroList)
+                    bag.items.remove(chosenItem)
+                    bag.used = true
+                    break
+                } else {
+                    println("""Der Held ${heroList[inputUserHero-1].name} hat die Maximale HP erreicht 
+                        |oder sie haben eine ungültige Zahl eingegeben. 
+                        |Bitte 0 bis ${heroList.size} eingeben.""".trimMargin())
+                    useItem(target1, target2, enemyList, heroList, bag, inputUserItem)
+                }
+            } catch (ex: Exception) {
+                println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
+            }
+        } while (inputUserHero !in 0..heroList.size)
     }
-}
 
-// Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
-fun hPToZero(target: Enemy) {
-    if (target.hP < 0)
-        target.hP = 0
-}
-
-fun tryCatch(input: Int) {
-    do {
-        var errorFound: Boolean
-        try {
-            input
-            errorFound = false
-        } catch (ex: Exception) {
-            errorFound = true
-
-            // Fehlerbehandlung nach Typ des Fehlers
-            if (ex is NumberFormatException)
-                println("Falsche Zahl eingegeben.")
-            else if (ex is NullPointerException)
-                println("Keine Eingabe! Bitte Zahl eingeben.")
-        }
-    } while (errorFound)
+    // Die Funktion hPToZero setzt minuswerte auf 0 (Ästhetik)
+    fun hPToZero(target: Enemy) {
+        if (target.hP < 0)
+            target.hP = 0
+    }
 }

@@ -9,6 +9,9 @@ open class Enemy(
     var damage: Int = 50,
     var block: Boolean = false
 ) {
+    open fun infoBox() {
+
+    }
 
     val attackNameList: MutableMap<String, Int> =
         mutableMapOf<String, Int>() //    todo liste der Individuellen Attacken und deren angriffsschaden
@@ -23,7 +26,7 @@ open class Enemy(
                 in 21..40 -> areaAttack(heroGroup)
                 in 41..100 -> healing(enemyGroup)
             }
-        // Über die Hälfte der HP
+            // Über die Hälfte der HP
         } else {
             when (randomizer) {
                 in 1..40 -> attack(heroGroup)
@@ -40,35 +43,19 @@ open class Enemy(
             randomTarget.hP -= this.damage / 2
             hPToZero(randomTarget)
             println(
-                """${this.name} greift ${randomTarget.name} mit Schwerthieb an (${this.damage}).
+                """${this.name} greift ${randomTarget.name} mit Klauenhieb an (${this.damage}).
                     |${randomTarget.name} hat die Attacke blockiert!!
                 |Die Attacke hat nur halben schaden zugefügt (${this.damage / 2}).
             """.trimMargin()
             )
             randomTarget.block = false
-//todo statusanzeige evtl in funktion auslagern
-            println(
-                """....................
-        |${randomTarget.name}
-        |HP ${randomTarget.hP}/${randomTarget.maxHP}
-        |Damage ${randomTarget.damage}
-        |....................
-    """.trimMargin()
-            )
+            randomTarget.infoBox()
         } else {
 
             randomTarget.hP -= this.damage
             hPToZero(randomTarget)
             println("${this.name} greift ${randomTarget.name} mit Schwerthieb an (${this.damage}).")
-//        todo statusanzeige evtl in funktion auslagern
-            println(
-                """....................
-        |${randomTarget.name}
-        |HP ${randomTarget.hP}/${randomTarget.maxHP}
-        |Damage ${randomTarget.damage}
-        |....................
-    """.trimMargin()
-            )
+            randomTarget.infoBox()
         }
     }
 
@@ -82,27 +69,13 @@ open class Enemy(
                 hPToZero(hero)
                 println("${this.name} fügt ${hero.name} nur noch (${this.damage / 2}) schaden zu.")
                 hero.block = false
-                println(
-                    """....................
-        |${hero.name}
-        |HP ${hero.hP}/${hero.maxHP}
-        |Damage ${hero.damage}
-        |....................
-    """.trimMargin()
-                )
+                hero.infoBox()
             } else {
                 hero.hP -= this.damage
                 hPToZero(hero)
                 println("${this.name} fügt ${hero.name} (${this.damage}) schaden zu.")
                 hero.block = false
-                println(
-                    """....................
-        |${hero.name}
-        |HP ${hero.hP}/${hero.maxHP}
-        |Damage ${hero.damage}
-        |....................
-    """.trimMargin()
-                )
+                hero.infoBox()
             }
         }
     }
@@ -121,7 +94,7 @@ open class Enemy(
             }
         } else {
             this.hP += maxHP / 100 * 20
-            println("${this.name} heilt sich um ${maxHP / 100 *20} HP.")
+            println("${this.name} heilt sich um ${maxHP / 100 * 20} HP.")
         }
     }
 

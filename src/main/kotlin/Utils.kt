@@ -3,13 +3,20 @@ import classes.enemys.Boss
 import classes.enemys.BossHelper
 import classes.enemys.Enemy
 import classes.heroes.*
-import com.sun.tools.javac.Main
 import kotlin.system.exitProcess
+// Farbpalette + Format !!!Credits an Johann Kucharczyk-Gentsch!!!
+val RED = "\u001B[31m"
+val YELLOW = "\u001B[33m"
+val GREEN = "\u001B[32m"
+val BLUE = "\u001B[34m"
+val BLACK = "\u001B[30m"
+val WHITE = "\u001B[47m"
+val RESETCOLOR = "\u001B[0m"
 
-val warriorName = listOf<String>("Alvis", "Bjorn", "Bud", "Einar", "Ivar", "Jarl", "Orvar", "Ragnar").random()
-val archerName =
+val WARRIORNAME = listOf<String>("Alvis", "Bjorn", "Bud", "Einar", "Ivar", "Jarl", "Orvar", "Ragnar").random()
+val ARCHERNAME =
     listOf<String>("Arjuna", "Abhimanyu", "Agilaz", "Apollo", "Arash", "Artemis", "Ashwathama", "Bhishma").random()
-val mageName = listOf<String>(
+val MAGENAME = listOf<String>(
     "Zathar",
     "Bartley",
     "Oswald",
@@ -25,7 +32,7 @@ val mageName = listOf<String>(
     "Lessthe",
     "Magnus"
 ).random()
-val enemyName = listOf<String>(
+val ENEMYNAME = listOf<String>(
     "Thornblight",
     "Skinrender",
     "Dreadnaught",
@@ -46,30 +53,28 @@ val enemyName = listOf<String>(
 
 fun intro(warrior: Warrior, mage: Mage, archer: Archer, boss: Boss) {
     println(
-        """
-    @@@@@@@   @@@  @@@  @@@  @@@   @@@@@@@@  @@@@@@@@   @@@@@@   @@@  @@@  
-    @@@@@@@@  @@@  @@@  @@@@ @@@  @@@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@  
-    @@!  @@@  @@!  @@@  @@!@!@@@  !@@        @@!       @@!  @@@  @@!@!@@@  
-    !@!  @!@  !@!  @!@  !@!!@!@!  !@!        !@!       !@!  @!@  !@!!@!@!  
-    @!@  !@!  @!@  !@!  @!@ !!@!  !@! @!@!@  @!!!:!    @!@  !@!  @!@ !!@!  
-    !@!  !!!  !@!  !!!  !@!  !!!  !!! !!@!!  !!!!!:    !@!  !!!  !@!  !!!  
-    !!:  !!!  !!:  !!!  !!:  !!!  :!!   !!:  !!:       !!:  !!!  !!:  !!!  
-    :!:  !:!  :!:  !:!  :!:  !:!  :!:   !::  :!:       :!:  !:!  :!:  !:!  
-     :::: ::  ::::: ::   ::   ::   ::: ::::   :: ::::  ::::: ::   ::   ::  
-    :: :  :    : :  :   ::    :    :: :: :   : :: ::    : :  :   ::    :   
-                                                                           
-                                                                       
-         @@@@@@@@@@    @@@@@@    @@@@@@   @@@@@@@  @@@@@@@@  @@@@@@@   
-         @@@@@@@@@@@  @@@@@@@@  @@@@@@@   @@@@@@@  @@@@@@@@  @@@@@@@@  
-         @@! @@! @@!  @@!  @@@  !@@         @@!    @@!       @@!  @@@  
-         !@! !@! !@!  !@!  @!@  !@!         !@!    !@!       !@!  @!@  
-         @!! !!@ @!@  @!@!@!@!  !!@@!!      @!!    @!!!:!    @!@!!@!   
-         !@!   ! !@!  !!!@!!!!   !!@!!!     !!!    !!!!!:    !!@!@!    
-         !!:     !!:  !!:  !!!       !:!    !!:    !!:       !!: :!!   
-         :!:     :!:  :!:  !:!      !:!     :!:    :!:       :!:  !:!  
-         :::     ::   ::   :::  :::: ::      ::     :: ::::  ::   :::  
-          :      :     :   : :  :: : :       :     : :: ::    :   : :  
-    """.trimIndent()
+        """$YELLOW          @@@@@@@@   @@@@@@   @@@       @@@@@@@   @@@@@@@@  @@@  @@@  
+         @@@@@@@@@  @@@@@@@@  @@@       @@@@@@@@  @@@@@@@@  @@@@ @@@  
+         !@@        @@!  @@@  @@!       @@!  @@@  @@!       @@!@!@@@  
+         !@!        !@!  @!@  !@!       !@!  @!@  !@!       !@!!@!@!  
+         !@! @!@!@  @!@  !@!  @!!       @!@  !@!  @!!!:!    @!@ !!@!  
+         !!! !!@!!  !@!  !!!  !!!       !@!  !!!  !!!!!:    !@!  !!!  
+         :!!   !!:  !!:  !!!  !!:       !!:  !!!  !!:       !!:  !!!  
+         :!:   !::  :!:  !:!   :!:      :!:  !:!  :!:       :!:  !:!  
+          ::: ::::  ::::: ::   :: ::::   :::: ::   :: ::::   ::   ::  
+          :: :: :    : :  :   : :: : :  :: :  :   : :: ::   ::    :   
+                                                                      
+                                                                     
+            @@@@@@   @@@ @@@  @@@  @@@  @@@@@@@   @@@@@@   @@@  @@@  
+           @@@@@@@   @@@ @@@  @@@@ @@@  @@@@@@@  @@@@@@@@  @@@  @@@  
+           !@@       @@! !@@  @@!@!@@@    @@!    @@!  @@@  @@!  !@@  
+           !@!       !@! @!!  !@!!@!@!    !@!    !@!  @!@  !@!  @!!  
+           !!@@!!     !@!@!   @!@ !!@!    @!!    @!@!@!@!   !@@!@!   
+            !!@!!!     @!!!   !@!  !!!    !!!    !!!@!!!!    @!!!    
+                !:!    !!:    !!:  !!!    !!:    !!:  !!!   !: :!!   
+               !:!     :!:    :!:  !:!    :!:    :!:  !:!  :!:  !:!  
+           :::: ::      ::     ::   ::     ::    ::   :::   ::  :::  
+           :: : :       :     ::    :      :      :   : :   :   ::$RESETCOLOR""".trimIndent()
     )
     println("Press Enter to Start the Game")
     readln()
@@ -80,30 +85,9 @@ fun intro(warrior: Warrior, mage: Mage, archer: Archer, boss: Boss) {
 fun generateHeroes(warrior: Warrior, mage: Mage, archer: Archer) {
     println("Generate Heroes to Play with...")
     println("Your Heroes are...")
-    println(
-        """....................
-        |Der Warrior ${warrior.name}
-        |HP ${warrior.hP}/${warrior.maxHP}
-        |Damage ${warrior.damage}
-        |....................
-    """.trimMargin()
-    )
-    println(
-        """....................
-        |Der Mage ${mage.name}
-        |HP ${mage.hP}/${mage.maxHP}
-        |Damage ${mage.damage}
-        |....................
-    """.trimMargin()
-    )
-    println(
-        """....................
-        |Der Archer ${archer.name}
-        |HP ${archer.hP}/${archer.maxHP}
-        |Damage ${archer.damage}
-        |....................
-    """.trimMargin()
-    )
+    warrior.infoBox()
+    archer.infoBox()
+    mage.infoBox()
 }
 
 fun generateEnemy(enemy: Boss) {
@@ -165,7 +149,7 @@ fun buffCounter(hero: Hero) {
 
 fun gameOver() {
     println(
-        """                                             
+        """$RED                                             
                    @@@@@@@@   @@@@@@   @@@@@@@@@@   @@@@@@@@     @@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@
                   @@@@@@@@@  @@@@@@@@  @@@@@@@@@@@  @@@@@@@@    @@@@@@@@  @@@  @@@  @@@@@@@@  @@@@@@@@
                   !@@        @@!  @@@  @@! @@! @@!  @@!         @@!  @@@  @@!  @@@  @@!       @@!  @@@
@@ -176,7 +160,7 @@ fun gameOver() {
                   :!:   !::  :!:  !:!  :!:     :!:  :!:         :!:  !:!   ::!!:!   :!:       :!:  !:!
                    ::: ::::  ::   :::  :::     ::    :: ::::    ::::: ::    ::::     :: ::::  ::   :::
                    :: :: :    :   : :   :      :    : :: ::      : :  :      :      : :: ::    :   : :
-    """.trimIndent()
+    $RESETCOLOR""".trimIndent()
     )
 }
 
@@ -198,10 +182,10 @@ fun victory() {
 }
 
 fun startGame() {
-    val warrior = Warrior(warriorName)
-    val mage = Mage(mageName)
-    val archer = Archer(archerName)
-    val boss = Boss(enemyName)
+    val warrior = Warrior(WARRIORNAME)
+    val mage = Mage(MAGENAME)
+    val archer = Archer(ARCHERNAME)
+    val boss = Boss(ENEMYNAME)
     val bossHelper = BossHelper("${boss.name}'s Lakai")
 
     val heroGroup: MutableList<Hero> = mutableListOf(warrior, mage, archer)
@@ -257,19 +241,24 @@ fun restartGame() {
     do {
         var inputUser: Int? = null
         try {
-            inputUser = readln().toInt() // todo eingabe
-            if (inputUser == 1) {
-                startGame()
-            } else if (inputUser == 2){
-                exitProcess(0)
+            inputUser = readln().toInt()
+            when (inputUser) {
+                1 -> {
+                    startGame()
+                }
+
+                2 -> {
+                    exitProcess(0)
+                }
+
+                else -> {
+                    println("Ungültige Zahl eingegeben. Bitte 1 oder 2 eingeben.")
+                }
             }
         } catch (ex: Exception) {
             // Fehlerbehandlung nach Typ des Fehlers
             if (ex is NumberFormatException)
                 println("Keine Zahl eingegeben. Bitte Zahl eingeben.")
-            else if (ex is NullPointerException)
-                println("Keine Eingabe! Bitte Zahl eingeben.")
-
         }
     } while (inputUser !in 1..2)
 }
