@@ -125,6 +125,7 @@ fun poisonCounter(groupOfHero: MutableList<Hero>, boss: Boss) {
         for (hero in groupOfHero) {
             hero.hP -= 15
             println("${hero.name}ist vergiftet und verliert 15 HP.")
+            boss.hPToZero(hero)
         }
         boss.poisonCounter--
     }
