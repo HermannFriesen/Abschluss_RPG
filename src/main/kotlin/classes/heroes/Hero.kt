@@ -1,7 +1,6 @@
 package classes.heroes
 
-import SLEEP_TIME
-import classes.Bag
+import classes.inventory.Bag
 import classes.enemys.Boss
 import classes.enemys.BossHelper
 import classes.enemys.Enemy

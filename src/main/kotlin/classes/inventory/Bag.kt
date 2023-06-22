@@ -1,4 +1,4 @@
-package classes
+package classes.inventory
 
 open class Bag(var used: Boolean = false) {
     var items = mutableListOf<Item>(

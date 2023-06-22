@@ -1,6 +1,4 @@
-package classes
-
-import classes.Item
+package classes.inventory
 
 class Buff(name: String) : Item(name) {
 

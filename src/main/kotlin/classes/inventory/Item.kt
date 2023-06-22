@@ -1,4 +1,4 @@
-package classes
+package classes.inventory
 import classes.heroes.Hero
 open class Item(var name: String) {
 
